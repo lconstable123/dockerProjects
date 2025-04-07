@@ -1,6 +1,6 @@
 MONGODB_IMAGE="mongodb/mongodb-community-server"
 MONGODB_TAG="7.0-ubuntu2204"
-CONTAINER_NAME="mdb"
+source .env.db
 
 #root creds
 ROOT_USER="root-user"
@@ -11,10 +11,6 @@ LOCALHOST_PORT=27017
 CONTAINER_PORT=27017
 source .env.network
 
-#key-value creds
-KEY_VALUE_DB="key-value-db"
-KEY_VALUE_USER="key-value-user"
-KEY_VALUE_PASSWORD="key-value-password"
 
 #storage
 
@@ -23,13 +19,13 @@ VOLUME_CONTAINER_PATH="/data/db"
 
 source setup.sh
 
-if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
-    echo "A container with the name $CONTAINER_NAME already exists."
-     echo "kill container called $CONTAINER_NAME first."
+if [ "$(docker ps -q -f name=$DB_CONTAINER_NAME)" ]; then
+    echo "A container with the name $DB_CONTAINER_NAME already exists."
+     echo "kill container called $DB_CONTAINER_NAME first."
      exit 1
 fi
 
- docker run -d --rm --name $CONTAINER_NAME \
+ docker run -d --rm --name $DB_CONTAINER_NAME \
 -e MONGO_INITDB_ROOT_USERNAME=$ROOT_USER \
 -e MONGO_INITDB_ROOT_PASSWORD=$ROOT_PASSWORD \
 -e KEY_VALUE_DB=$KEY_VALUE_DB \
